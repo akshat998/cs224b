@@ -84,7 +84,23 @@ To utilize the `monitor_and_resubmit.py` script, execute it with specific argume
 
 ## Experiments
 
+1. **Time Comparison**: Analyze the scaling of docking relative to the number of atoms. Access the raw data timings for docking on a single CPU at `Experiments/EXP1_time_vs_num_atoms/TIME.csv`.
 
+2. **Scaling Behavior**: Examine the total runtime for docking the NCI Open Compound Collection. The data is available at `Experiments/EXP2_linear_scaling/cpu_runtime_data.csv`.
+    - To conduct this experiment, modify the `submit.sh` file. Use the `--array` option to specify the number of nodes (e.g., `#SBATCH --array=1-10` for utilizing 10 nodes).
+    - Set `#SBATCH --ntasks-per-node=40` to define the number of CPUs per node. In this scenario, a total of 400 CPUs will be deployed across 10 nodes.
+
+3. **Understanding Load Balancing Effects**: Investigate the impact of using load balancing on processing times. Find the comparison data in `Experiments/EXP3_load_balancing/timings_data.csv`.
+    - To execute this experiment, adjust the `USE_LOAD_BALANCER` parameter within the `all.ctrl` file to `True` or `False` to toggle load balancing.
+    
+4. **Fault Tolerance Experiments**: Explore how different levels of fault tolerance affect the number of molecular failures across three replicates, detailed in `Experiments/EXP4_fault_taul/fault_taul_timings.csv`.
+    - **Setup**: Conduct these experiments using 10 nodes, each equipped with 40 CPUs.
+    - **Simulating Early Node Crashes**: To induce an early crash in a specific node, execute `scancel job_id` while the corresponding `job_id` is in a pending (PD) status.
+    - **Simulating Crashes During Calculations**: To simulate a crash while calculations are ongoing, use `scancel job_id` when the `job_id` is in running (R) status.
+    - **Handling Early Crashes**: If an early crash occurs, you can manage it by running `python3 monitor_and_resubmit.py check_progress [job_id]`. This script automatically resubmits the crashed node.
+    - **Resuming Partial Calculations**: To continue calculations after a partial set of molecules has been processed, execute `python3 monitor_and_resubmit.py finish_and_resubmit [job_id]`.
+
+    
 ## Questions, problems?
 Make a github issue 😄. Please be as clear and descriptive as possible. Please feel free to reach
 out in person: (akshat98m[AT]stanford[DOT]edu)
