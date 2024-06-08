@@ -1,6 +1,6 @@
 # all.ctrl
 
-# Filee containing a list of smiles, seperated by newline characters
+# File containing a list of smiles, separated by newline characters
 SMILES_FILES=./DATA/docking.smi
 
 # NUM_MOLS: Total number of molecules to be processed. Must be an integer value.
